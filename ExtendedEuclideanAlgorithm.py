@@ -4,8 +4,8 @@ def gcdExtended(a, b):
     # Base Case 
     if a == 0 : 
         return b,0,1
-             
-    gcd,x1,y1 = gcdExtended(b%a, a) 
+    rem = b%a
+    gcd,x1,y1 = gcdExtended(rem, a) 
      
     # Update x and y using results of recursive 
     # call 
@@ -13,9 +13,3 @@ def gcdExtended(a, b):
     y = x1 
      
     return gcd,x,y 
-
-# Driver code 
-a, b = 35,15
-gcd, x, y = gcdExtended(a, b) 
-print("gcd(", a , "," , b, ") = ", gcd)
-print(gcd, "=", a, "*", x, "+", b, "*", y)

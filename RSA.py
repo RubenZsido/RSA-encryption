@@ -1,30 +1,38 @@
 import random
-#Step 1
-#Public key
-# Choose two large prime numbers (p and q)
-p = 13
-q = 17
+from ExtendedEuclideanAlgorithm import gcdExtended
+from EuclideanAlgorithm import gcd
 
-#Step 2
-# Calculate n = p*q and z = (p-1)(q-1)
-n = p * q #11 * 13 7 143
-z = (p-1)*(q-1) #10 * 12 = 120
+def mod_inverse(e, phi_n):
+    g, x, y = gcdExtended(e, phi_n)
+    if g != 1:
+        raise ValueError("The modular inverse does not exist")
+    else:
+        return x % phi_n
 
-#Step 3
-# Choose a number e where 1 < e < z.
-#randint includes both parameters
-#e = random.randint(2, z+1)
-e = 5
-#Step 4
-#calculate secret key
-# Calculate d = e-1mod(p-1)(q-1)
-d = e-1 % (p-1) * (q-1)
 
-# You can bundle private key pair as (n,d)
-print("Private keys: (", n, ", ", d, ")")
-# You can bundle public key pair as (n,e)
+p = 11
+q = 13
+if p == q:
+    print("p and q must be different")
 
-#plaintext: m
-m = 10
-cyphertext = m * e % n
-print(cyphertext)
+n = p * q
+phi_n = (p-1)*(q-1)
+
+e = 23
+if not gcd(e,phi_n) == 1:
+    print("e's and z's gdc must be one")
+
+#I don't fully understand this part yet
+d = mod_inverse(e, phi_n)
+
+if not (d * e - 1) % phi_n == 0:
+    print("e × d − 1 must be a multiple of φ(n)")
+print("Public key: (", n, ", ", e, ")")
+print("Secret Key: (", n, ",", d, ")" )
+m = 5
+me = pow(m, e) % n
+
+md = pow(me, d) % n
+
+print("me:", me)
+print("md:", md)
